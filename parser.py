@@ -41,8 +41,16 @@ print("file is here")
 # pip3 freeze will give all the versions of packages
 
 import pandas as pd
+import six
 
-data = pd.read_csv(myfile, sep='\s+|,', header=None)
+data = pd.read_csv(myfile, sep='\s+|,')
+
+#if data.iloc[0,0]=='str':
+#	data = pd.read_csv(myfile, sep='\s+|,' , header=1)
+#else:
+#	head = "None"
+
+#data = pd.read_csv(myfile, sep='\s+|,', header=head) 
 
 # If header does not have header, remove header=None
 
