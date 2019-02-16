@@ -45,6 +45,8 @@ import pandas as pd
 data = pd.read_csv(myfile, sep='\s+|,', header=None)
 
 # If header does not have header, remove header=None
+
+# To print the first 5 lines
 print(data.head())
 
 # Display dir items for data
@@ -54,4 +56,26 @@ print(data.head())
 #	print(item)
 
 # Solution 2
-print (data.shape)
+#print (data.shape)
+
+
+# 2. Organize that file so we can access column or rows of it easily
+# 2a. access any row "pandas access data by row"
+
+# Printing all the columns between row 3 and 5 
+#print (data.iloc[3:5,:])
+
+# 2b. access any column "pandas access data by column"
+
+# Printing the last 3 columns between row 0 to 3 
+#print (data.iloc[:3,-3:])
+# 2c. access any value "pandas access specific data by location"
+
+#print (data.iloc[3,4])
+
+# 3. Compute some summary stats of the dataset
+
+import numpy as np
+
+print(np.mean(data))
+print(np.std(data))
