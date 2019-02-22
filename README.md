@@ -29,6 +29,3 @@
 		3.2.6		store them in an y-axis array
 		3.2.7	plt.scatter
 		3.2.8	plt.savefig(the plot)
-	3.3 plot type
-		3.3.1 for each column
-		3.2.2	plot type
