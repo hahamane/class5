@@ -1,8 +1,10 @@
 #! usr/bin/env python
 # 1. load dataset from a file
-# 2. organize the text fie so we can access columns or rows of it easily
+# 2. organize the text file so we can access columns or rows of it easily
+# 3. if the file does not have header, ask user if the user wants to add header. If yes, add
 # 3. compute some summary stats about the dataset
-# 4. print those summary stats
+# 4. plot histogram of a chosen column
+# 5. plot scatter plot of 2 chosen column
 
 
 # 1. load a dataset
@@ -13,6 +15,13 @@
 # But with argparse, we can automate it using ls | ...
 
 from argparse import ArgumentParser
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+import numpy as np
+from tkinter import * 
 
 parser = ArgumentParser(description = 'A CSV Reader + stats maker')
 parser.add_argument ('csvfile', type=str,help='Path')
@@ -21,15 +30,7 @@ myfile = parsed_args.csvfile
 import os 
 import os.path as op
 
-# Solution 1
-
 assert op.isfile(myfile), "give a real file"
-
-# Solution 2
-#if not op.isfile(myfile):
-#	raise ValueError("not a file")
-
-# Solution 3 (if statement to check if the file exists)
 
 print("file is here")
 
@@ -41,49 +42,174 @@ print("file is here")
 # pip3 freeze will give all the versions of packages
 
 import pandas as pd
-import six
 
-data = pd.read_csv(myfile, sep='\s+|,')
+data = pd.read_csv(myfile, sep='\s+|,', header=None, engine = 'python')
 
-#if data.iloc[0,0]=='str':
-#	data = pd.read_csv(myfile, sep='\s+|,' , header=1)
-#else:
-#	head = "None"
+# Checking if the header exists
+# If the first value of the table is a string, that means that 
+# there is a header. Therefore, check the header, then act accordingly
 
-#data = pd.read_csv(myfile, sep='\s+|,', header=head) 
+checkHeader = True
 
-# If header does not have header, remove header=None
+try:
+# If the first value is not a float, it means that there is header
+	checkHeader = float(data.iloc[0,0])
+# By changing the checkHeader as false we can later add the headers
+	checkHeader = False
 
-# To print the first 5 lines
-print(data.head())
+except ValueError:
+	
+	data = pd.read_csv(myfile, sep='\s+|,', engine = 'python')
 
-# Display dir items for data
+if checkHeader == False:
+	check = False
 
-# Solution 1
-#for item in dir(data):
-#	print(item)
+# If the user inputs wrong value, the program will keep on asking
 
-# Solution 2
-#print (data.shape)
+	while check == False:
+		answerHeader = input("Would you like to add header? Y/N")
+		
+# 3.If the answer is Yes then ask for the header
+
+		if answerHeader =="Y" or answerHeader == "y":
+			headerArray = []
+
+# 3a. Ask for the header and store it in the headerArray arry			
+			
+			for i in range(0, len(data.columns)):
+				header = input("What is the header for " +str(i+1)+("th column?"))	
+				headerArray.append(header)
+
+# 3b. Adding the header
+			
+			data = pd.read_csv(myfile, sep='\s+|,', names = headerArray, engine = 'python')
+			check = True
+
+# 3c. If the user does not want to add header, then just change check into True to exit the loop
+
+		elif answerHeader =="N" or answerHeader == "n":
+			check = True
+
+# If the user inputs other than Y or N, then keep the check as false to rerun the question
+
+		else:
+			print("Please input correct option")
+
+# 4. Compute some summary stats of the dataset
+def getStats():
+	check = True
+
+# Ask which statistics the user wants. Using try/except, catch if the user does not
+# input the required option
+
+	while check == True:
+
+		print("1. Averages of the columns")
+		print("2. Standard Deviations of the columns")
+		print("3. Exit")
+		try:
+			choice = int(input())
+
+			if choice == 1:
+				print("Printing averages of the columns")
+				print(np.mean(data))
+			elif choice == 2:
+				print("Printing standard deviations of the columns")
+				print(np.std(data))
+			elif choice == 3:
+				check = False
+			else :
+				print("Please choose the correct option")
+		except ValueError:
+			print("Please choose the correct option")
+
+# 5. printing histogram
+def getHistogram():
+
+# 5a. Ask which column the user wants the histogram
+
+	choice = getColumn()
+# 5b. Using the result of the getColumn, plot the histogram
+
+	data.iloc[:,choice-1].plot.hist()	
+	plt.title(str(list(data.columns.values[choice-1])))
+	plt.ylabel("Counts")
+	plt.xlabel(str(list(data.columns.values[choice-1])))
+	plt.show()
+
+# This method will return the index of the column that the user choses
+def getColumn():
+	
+	# Printing the headers of the columns for the user to chose
+	for i in range(0, len(data.columns)):
+		print(str(i+1) + " " + str(list(data.columns.values[i])))
+	check = True
+	while check ==True:
+		try:
+			choice = int(input("which data would you like?"))
+			
+		except ValueError:
+			print("Please choose correct option")
+		if choice > len(data.columns):
+			print("Please choose correct option")
+		else:
+			check = False
+	return choice
 
 
-# 2. Organize that file so we can access column or rows of it easily
-# 2a. access any row "pandas access data by row"
+# 6.  printing pair plot
+def getPairPlot():
+# 6a. Ask for the columns to be plotted.
 
-# Printing all the columns between row 3 and 5 
-#print (data.iloc[3:5,:])
+	print("First column")
+	firstChoice = getColumn()
+	print("Second column")
+	secondChoice = getColumn()
 
-# 2b. access any column "pandas access data by column"
+# 6b. Plot using the 2 columns user wants
 
-# Printing the last 3 columns between row 0 to 3 
-#print (data.iloc[:3,-3:])
-# 2c. access any value "pandas access specific data by location"
+	plt.scatter(data.iloc[:,firstChoice-1], data.iloc[:,secondChoice-1])
+	plt.title(str(list(data.columns.values[firstChoice-1] ))+ " vs " + str(list(data.columns.values[secondChoice-1])))
+	plt.xlabel(str(list(data.columns.values[firstChoice-1] )))
+	plt.ylabel(str(list(data.columns.values[secondChoice-1])))
 
-#print (data.iloc[3,4])
+	plt.show()
 
-# 3. Compute some summary stats of the dataset
+# This method will print the first 5 rows of data
+def getData():
+	print("Printing the data")
+	print(data.head())
 
-import numpy as np
+# This method is the menu method
+def mainMenu(): 
+	check = True
+	while check == True:
+		check = False
+		print("What would you like to do?")
+		print("1. View first 5 entries of data")
+		print("2. View Summary stats")
+		print("3. View Histogram")
+		print("4. View Scatter plots of 2 columns chosen")
+		print("5. Exit")
 
-print(np.mean(data))
-print(np.std(data))
+		choice = input()
+		if choice == "1":
+			getData()
+			check = True
+		elif choice == "2":
+			getStats()
+			check = True
+		elif choice == "3":
+			getHistogram()
+			check = True
+		elif choice == "4":
+			getPairPlot()
+			check = True
+		elif choice == "5":
+			check = False
+		else:
+			print("Please enter valid option")
+			check = True
+
+# Run the program
+mainMenu()
