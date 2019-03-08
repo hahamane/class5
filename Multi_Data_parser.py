@@ -218,8 +218,8 @@ def get4DPlot(path):
 					plt.savefig(str(newPath)+"/"+str(column1)+"_"+str(column2)+"_Sex_AGE.png")
 					plt.clf()
 					
-#getStats(newPath)
-#getHistogram(newPath)
-#getPairPlot(newPath)
-#getRelationPlot(newPath)
+getStats(newPath)
+getHistogram(newPath)
+getPairPlot(newPath)
+getRelationPlot(newPath)
 get4DPlot(newPath)
