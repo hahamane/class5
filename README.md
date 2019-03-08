@@ -1,31 +1,12 @@
-# class5
-1. Load data
-	1.1 get the name of the file
-	1.2 assert if the file exists. If the file does not exist, end the program
-	
-2. Format the data
-	2.1 look at the csv files to see how the data is divided (by spaces, commas (,), semi-columes, etc)
-	2.2 check if the header exists
-	2.3 split the data according to the separators and load it.
-	2.4 if header does not exist, header=None
-	2.5 else header= the number of rows
+# Assignment for week 7
 
-3. Look at it
-	3.1 plot histogram
-		3.1.1 import matplotlib.pyplot as plt
-		3.1.2 for each column
-		3.1.3	get values
-		3.1.4	set the interval
-		3.1.5	using plt.histo plot histogram
-		3.1.6	give title for the histogram
-		3.1.7	give x-label and y-label name
-		3.1.8	plt.savefig(the histogram)
-	3.2 plot pairs
-		3.2.1 for each column
-		3.2.2	get values
-		3.2.3	store it in an x-axis array
-		3.2.4	for each column
-		3.2.5		get values
-		3.2.6		store them in an y-axis array
-		3.2.7	plt.scatter
-		3.2.8	plt.savefig(the plot)
+I have chosen S1 vs S2 vs SEX vs (BMI or AGE or BP or Y) and S3 vs S4 vs SEX vs (BMI or AGE or BP or Y). 
+The reasons I have chosen these are because from the relationship graph, I could see that there are strong 
+correlation between S1 and S2 positively, and S3 and S4 (negatively). I have decided to keep the color chart 
+representing sex, as there are only two option. I wanted to see whether S1, S2, S3 and S4 has other relationship
+with either BMP, AGE, BP or Y.
+
+Data points for most of other graphs are located in the center, looking like a ball, not showing any relationship
+between them. However, seen from S3 vs S4 vs SEX vs Y, we can see that female tend to have higher S4 while lower S3
+and better progree than male.
+
