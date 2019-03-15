@@ -3,7 +3,7 @@ import plotly.graph_objs as go
 import numpy as np 
 import pandas as pd 
 from plotly.offline import iplot, plot
-
+import sklearn.linear_model
 #Changing it to pandas
 data = load_diabetes()
 dataset = pd.DataFrame(data=data['data'], columns=data['feature_names'])
@@ -156,8 +156,49 @@ def getMultipleScatterWithSexAsColor():
 				plot(fig,filename="./MultipleGraph/{0} vs {1} vs Sex and Y.html".format(column1, column2),auto_open=False)	
 
 
+def linearRegressionAnalysis():
+	from sklearn.linear_model import LinearRegression
+	X = dataset
+	y = target["Y"]
+	model = LinearRegression()
+	model.fit(X,y)
+	print("R2 of linear regression is " + str(model.score(X,y)))
+
+def logarithRegressionAnalysis():
+	from sklearn.linear_model import LogisticRegression
+	X=dataset
+	y = target["Y"]
+	model = LogisticRegression()
+	model.fit(X,y)
+	print("R2 of Logarithmic regression is " + str(model.score(X,y)))
+
+def RidgeAnalysis():
+	from sklearn.linear_model import Ridge
+	X=dataset
+	y = target["Y"]
+	model = Ridge(alpha=0.1)
+	model.fit(X,y)
+	print("R2 of Ridge regression is " + str(model.score(X,y)))
+
+def polynomialRegressionAnalysis():
+	from sklearn.preprocessing import PolynomialFeatures
+	from sklearn.linear_model import LinearRegression
+	X = dataset
+	y = target["Y"]
+	model = LinearRegression()
+	poly = PolynomialFeatures(degree = 2)
+	x_poly = poly.fit_transform(X)
+	model.fit(x_poly, y)
+	print("R2 of Polynomial regression is " + str(model.score(x_poly,y)))
+
 #histogram()
 #pairPlot()
 #timeStamp()
 #getAllScatter()
-getMultipleScatterWithSexAsColor()
+#getMultipleScatterWithSexAsColor()
+
+
+linearRegressionAnalysis()
+logarithRegressionAnalysis()
+RidgeAnalysis()
+polynomialRegressionAnalysis()
