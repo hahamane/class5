@@ -3,7 +3,8 @@ import plotly.graph_objs as go
 import numpy as np 
 import pandas as pd 
 from plotly.offline import iplot, plot
-import sklearn.linear_model
+import matplotlib.pyplot as plt
+
 #Changing it to pandas
 data = load_diabetes()
 dataset = pd.DataFrame(data=data['data'], columns=data['feature_names'])
@@ -155,50 +156,52 @@ def getMultipleScatterWithSexAsColor():
 				fig = go.Figure(data=data,layout=layout)
 				plot(fig,filename="./MultipleGraph/{0} vs {1} vs Sex and Y.html".format(column1, column2),auto_open=False)	
 
+def leastSquareAnalysis():
+	import statsmodels.api as sm 
 
-def linearRegressionAnalysis():
+	#model = LinearRegression()
+	#X_train, X_test, y_train, y_test = model_selection.train_test_split(dataset,target,test_size = 0.2)
+	#model.fit(X_train,y_train)
+	X2 = sm.add_constant(dataset)
+	est = sm.OLS(target,X2)
+	est2 = est.fit()
+	print(est2.summary())	
+
+def modelSelection():
+	from sklearn.model_selection import KFold
+	from sklearn import model_selection
 	from sklearn.linear_model import LinearRegression
-	X = dataset
-	y = target["Y"]
-	model = LinearRegression()
-	model.fit(X,y)
-	print("R2 of linear regression is " + str(model.score(X,y)))
-
-def logarithRegressionAnalysis():
-	from sklearn.linear_model import LogisticRegression
-	X=dataset
-	y = target["Y"]
-	model = LogisticRegression()
-	model.fit(X,y)
-	print("R2 of Logarithmic regression is " + str(model.score(X,y)))
-
-def RidgeAnalysis():
 	from sklearn.linear_model import Ridge
-	X=dataset
-	y = target["Y"]
-	model = Ridge(alpha=0.1)
-	model.fit(X,y)
-	print("R2 of Ridge regression is " + str(model.score(X,y)))
-
-def polynomialRegressionAnalysis():
 	from sklearn.preprocessing import PolynomialFeatures
-	from sklearn.linear_model import LinearRegression
-	X = dataset
-	y = target["Y"]
-	model = LinearRegression()
+	
+	dataset.drop('age', axis = 1, inplace =True)
+	dataset.drop('s2', axis = 1, inplace =True)
+	dataset.drop('s3', axis = 1, inplace =True)
+	dataset.drop('s4', axis = 1, inplace =True)
+	dataset.drop('s6', axis = 1, inplace =True)
+	
+	seed = 7
+	kf = KFold(n_splits=10, random_state=seed)
+	linearModel = LinearRegression()
+	results = model_selection.cross_val_score(linearModel,dataset,target,cv=kf)
+	print("Accuracy for linear regression : %3.f%%(%.3f%%)" % (results.mean()*100.0, results.std()*100.0) )
+
+	ridgeModel = Ridge()
+	results = model_selection.cross_val_score(ridgeModel,dataset,target,cv=kf)
+	print("Accuracy for Ridge : %3.f%%(%.3f%%)" % (results.mean()*100.0, results.std()*100.0) )
+
 	poly = PolynomialFeatures(degree = 2)
-	x_poly = poly.fit_transform(X)
-	model.fit(x_poly, y)
-	print("R2 of Polynomial regression is " + str(model.score(x_poly,y)))
+	X = poly.fit_transform(dataset)
+	polynomialModel = LinearRegression()
+	results = model_selection.cross_val_score(polynomialModel,X,target,cv=kf)
+	print("Accuracy for polynomial regression : %3.f%%(%.3f%%)" % (results.mean()*100.0, results.std()*100.0) )
+
 
 #histogram()
-#pairPlot()
-#timeStamp()
+##pairPlot()
 #getAllScatter()
 #getMultipleScatterWithSexAsColor()
-
-
-linearRegressionAnalysis()
-logarithRegressionAnalysis()
-RidgeAnalysis()
-polynomialRegressionAnalysis()
+#getRelationship()
+#linearRegressionAnalysis()
+#leastSquareAnalysis()
+modelSelection()
