@@ -12,7 +12,13 @@ target = pd.DataFrame (data=data.target, columns = ['Y'])
 
 unsortedDataset = pd.DataFrame(data=data['data'], columns=data['feature_names'])
 unsortedDataset["Y"] = data.target
+unsortedDataset.drop('age', axis = 1, inplace =True)
+unsortedDataset.drop('s2', axis = 1, inplace =True)
+unsortedDataset.drop('s3', axis = 1, inplace =True)
+unsortedDataset.drop('s4', axis = 1, inplace =True)
+unsortedDataset.drop('s6', axis = 1, inplace =True)
 sortedDataset=unsortedDataset.sort_values('Y').reset_index(drop=True)
+
 
 # Histogram
 # Creating folder to save histograms
@@ -121,32 +127,32 @@ def getAllScatter():
 	fig = go.Figure(data=data,layout=layout)
 	plot(fig,filename="./MixScatterGraph/Attributes vs Y.html",auto_open=False)	
 
-def getMultipleScatterWithSexAsColor():
+def getMultipleScatter():
 	currentPath = str(os.getcwd())
 	newPath = currentPath + "/MultipleGraph"
 	try:
 		os.mkdir(newPath)
 	except OSError:
 		print ("The folder already exists")
-	sex=sortedDataset.columns[1]
-	y = sortedDataset.columns[10]
+	
+	y = sortedDataset.columns[5]
 	for idx, column1 in enumerate(sortedDataset.columns):
 		for jdx, column2 in enumerate(sortedDataset.columns):
-			if (column1 != sex and column1 != y and column2 != sex and column2 != y and column1!=column2):
+			if (column1 != y and column2 != y and column1!=column2):
 				trace = go.Scatter(
 					x=sortedDataset.iloc[:,idx],
 					y=sortedDataset.iloc[:,jdx],
 					mode = 'markers',
 					marker=dict(
-						size = sortedDataset.iloc[:,10]/10,
-						color = sortedDataset.iloc[:,1],
-						colorbar=dict(title="Sex"),
-						colorscale = 'Viridis',
-						showscale = True
+						size = sortedDataset.iloc[:,5]/10
+						#color = sortedDataset.iloc[:,5],
+						#colorbar=dict(title="Y"),
+						#colorscale = 'Viridis',
+						#showscale = True
 						)
 					)
 				data=[trace]
-				title = column1 + " vs " + column2 + " vs Sex vs Y"
+				title = column1 + " vs " + column2 + " vs Y"
 				layout = go.Layout(
 				title= title, 
 				xaxis=dict(title=column1),
@@ -154,7 +160,7 @@ def getMultipleScatterWithSexAsColor():
 				showlegend=False
 				)
 				fig = go.Figure(data=data,layout=layout)
-				plot(fig,filename="./MultipleGraph/{0} vs {1} vs Sex and Y.html".format(column1, column2),auto_open=False)	
+				plot(fig,filename="./MultipleGraph/{0}_vs_{1}_vs_Y.html".format(column1, column2),auto_open=False)	
 
 def leastSquareAnalysis():
 	import statsmodels.api as sm 
@@ -198,10 +204,10 @@ def modelSelection():
 
 
 #histogram()
-##pairPlot()
+#pairPlot()
 #getAllScatter()
-#getMultipleScatterWithSexAsColor()
+#getMultipleScatter()
 #getRelationship()
 #linearRegressionAnalysis()
-#leastSquareAnalysis()
 modelSelection()
+#leastSquareAnalysis()

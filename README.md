@@ -10,9 +10,9 @@ Instructions and template for final projects.
 ### Resources
 Your repository should include the following:
 
-- Python script for your analysis
-- Results figure/saved file
-- Dockerfile for your experiment
+- Python script for your analysis: `analysis.py`
+- Results figure/saved file: `multiplegraph` 
+- Dockerfile for your experiment: `Dockerfile`
 - runtime-instructions in a file named RUNME.md
 
 -----
