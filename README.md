@@ -1,9 +1,6 @@
-# cebd1160_project_template
-Instructions and template for final projects.
-
 | Name | Date |
 |:-------|:---------------|
-|Dae Hun Park| 2019-03-19|
+|Dae Hun Park| 2019-03-20|
 
 -----
 
