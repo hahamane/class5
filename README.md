@@ -3,7 +3,7 @@ Instructions and template for final projects.
 
 | Name | Date |
 |:-------|:---------------|
-|Your name here | Completion date|
+|Dae Hun Park| 2019-03-19|
 
 -----
 
@@ -19,43 +19,47 @@ Your repository should include the following:
 
 ## Research Question
 
-1 sentence description of your research question.
+Using the data colleted, is it possible to 
+1. understand how variables would correlate to diabetes progression
+2. predict the progression of diabetes.
 
 ### Abstract
 
-4 sentence longer explanation about your research question. Include:
-
-- opportunity (what data do we have)
-- challenge (what is the "problem" we could solve with this dataset)
-- action (how will we try to solve this problem/answer this question)
-- resolution (what did we end up producing)
+The data of 442 patients were collected to understand the progresss of diabetes after 1 year. Using the data collected, it may be possible to understand the relationship between sex, age, body mass index, average blood pressure and 6 different blood serum, noted as s1, s2, s3, s4, s5 and s6; and the progress of diabete. Here we tried to understand whether each of these variables would affect the progress of diabetes. From the comparison of different regression model, it was found that linear regression is the model with the highest R2 value. After the evaluating the coefficients and using p-value test, it was found that only 5 variables, namely sex, body mass index, average blood pressure, s1 and s5 were the variable with significant correlation to the progress of diabetes. However, even after only considering the 5 variables it was found that the model does not provide adequate prediction.
 
 ### Introduction
 
-Brief (no more than 1-2 paragraph) description about the dataset. Can copy from elsewhere, but cite the source (i.e. at least link, and explicitly say if it's copied from elsewhere).
+The data used are ten baseline variables, age, sex, body mass index, average blood pressure, and six blood serum measurements obtained for each of 442 diabetes patients, as well as the response of interest, a quantitative measure of disease progression one year after baseline. It was taken from the publicly available BNU1 dataset([https://scikit-learn.org/stable/datasets/index.html#toy-datasets](https://scikit-learn.org/stable/datasets/index.html#toy-datasets)).
 
 ### Methods
 
-Brief (no more than 1-2 paragraph) description about how you decided to approach solving it. Include:
+The methods compared for modelling this data were linear regression, polynomial regression and the Ridge Regressor built into scikit-learn. Pseudocode for Ridge regressor can be found [here](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html) and for linear regression [here](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html) and for 2 degree polynomial regression [here](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html). 
 
-- pseudocode for this method (either created by you or cited from somewhere else)
-- why you chose this method
+Each models was cross-validated and its score were calculated. The method can be found [here](https://machinelearningmastery.com/evaluate-performance-machine-learning-algorithms-python-using-resampling/). Once the model with highest score is found, p value test was performed to see which variables had significant impact on the model. The statmodel library was used to perform the p-value test found [here](https://stackoverflow.com/questions/27928275/find-p-value-significance-in-scikit-learn-linearregression). 
+
+Once the significant variables were found, the regression model is reevaluated to understand the accuracy of the model.
 
 ### Results
 
-Brief (2 paragraph) description about your results. Include:
+After the cross validation of models, it was found that linear regression (46%) had highest score compared to that of Ridge (41%) and that of polynomial (38%). Therefore the linear regression model was chosen. The figure below shows the p-values with alpha > 0.1
+[P-value Test] (./P-value_test.png)
 
-- At least 1 figure
-- At least 1 "value" that summarizes either your data or the "performance" of your method
-- A short explanation of both of the above
+It was found that only 5 variables, namely sex, body mass index, average blood pressure, s1 and s5 were the variable with significant correlation to the progress of diabetes. For example, as seen in the graph below, we can see that as bp and bmi increases, so does y.
+[bp vs bmi vs y graph](./MultipleGraph/bp_vs_bmi_vs_Y.html)
+
+The performance of the regression model using only 5 variable mentioned above was 46%.
 
 ### Discussion
-Brief (no more than 1-2 paragraph) description about what you did. Include:
 
-- interpretation of whether your method "solved" the problem
-- suggested next step that could make it better.
+Since the score of the modified method is still too low, it is not possible to predict the progress of the diabetes using this method. However, this method shows that there are relationship between 5 variables and the diabete progress. 
+
 
 ### References
-All of the links
+1. https://scikit-learn.org/stable/datasets/index.html#toy-datasets
+2. https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html
+3. https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html
+4. https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html)
+5. https://machinelearningmastery.com/evaluate-performance-machine-learning-algorithms-python-using-resampling/
+6. https://stackoverflow.com/questions/27928275/find-p-value-significance-in-scikit-learn-linearregression 
 
 -------
