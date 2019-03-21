@@ -42,7 +42,7 @@ After the cross validation of models, it was found that linear regression (46%) 
 ![P-value Test](./P-value_test.PNG)
 
 It was found that only 5 variables, namely sex, body mass index, average blood pressure, s1 and s5 were the variable with significant correlation to the progress of diabetes. For example, as seen in the graph below, we can see that as bp and bmi increases, so does y.
-![bp vs bmi vs y graph](./MultipleGraph/bp_vs_bmi_vs_Y.html)
+![bp vs bmi vs y graph](./bp_vs_bmi_vs_y.PNG)
 
 The performance of the regression model using only 5 variable mentioned above was 46%.
 
