@@ -12,11 +12,6 @@ target = pd.DataFrame (data=data.target, columns = ['Y'])
 
 unsortedDataset = pd.DataFrame(data=data['data'], columns=data['feature_names'])
 unsortedDataset["Y"] = data.target
-unsortedDataset.drop('age', axis = 1, inplace =True)
-unsortedDataset.drop('s2', axis = 1, inplace =True)
-unsortedDataset.drop('s3', axis = 1, inplace =True)
-unsortedDataset.drop('s4', axis = 1, inplace =True)
-unsortedDataset.drop('s6', axis = 1, inplace =True)
 sortedDataset=unsortedDataset.sort_values('Y').reset_index(drop=True)
 
 
@@ -145,6 +140,9 @@ def getMultipleScatter():
 					mode = 'markers',
 					marker=dict(
 						size = sortedDataset.iloc[:,5]/10
+
+## If you want to play with colors, please adjust following code
+
 						#color = sortedDataset.iloc[:,5],
 						#colorbar=dict(title="Y"),
 						#colorscale = 'Viridis',
@@ -164,10 +162,11 @@ def getMultipleScatter():
 
 def leastSquareAnalysis():
 	import statsmodels.api as sm 
-
-	#model = LinearRegression()
-	#X_train, X_test, y_train, y_test = model_selection.train_test_split(dataset,target,test_size = 0.2)
-	#model.fit(X_train,y_train)
+	dataset.drop('age', axis = 1, inplace =True)
+	dataset.drop('s2', axis = 1, inplace =True)
+	dataset.drop('s3', axis = 1, inplace =True)
+	dataset.drop('s4', axis = 1, inplace =True)
+	dataset.drop('s6', axis = 1, inplace =True)
 	X2 = sm.add_constant(dataset)
 	est = sm.OLS(target,X2)
 	est2 = est.fit()
@@ -207,7 +206,6 @@ def modelSelection():
 #pairPlot()
 #getAllScatter()
 #getMultipleScatter()
-#getRelationship()
-#linearRegressionAnalysis()
-modelSelection()
-#leastSquareAnalysis()
+#getRelationship
+#modelSelection()
+leastSquareAnalysis()

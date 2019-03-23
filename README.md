@@ -38,10 +38,10 @@ Once the significant variables were found, the regression model is reevaluated t
 
 ### Results
 
-After the cross validation of models, it was found that linear regression (46%) had highest score compared to that of Ridge (41%) and that of polynomial (38%). Therefore the linear regression model was chosen. The figure below shows the p-values with alpha > 0.1.
+After the cross validation of models, it was found that linear regression (46%) had highest score compared to that of Ridge (41%) and that of polynomial (38%). Therefore the linear regression model was chosen. The figure below shows the p-values.
 ![P-value Test](./P-value_test.PNG)
 
-It was found that only 5 variables, namely sex, body mass index, average blood pressure, s1 and s5 were the variable with significant correlation to the progress of diabetes. For example, as seen in the graph below, we can see that as bp and bmi increases, so does y.
+It was found that only 5 variables, namely sex, body mass index, average blood pressure, s1 and s5 were the variable with significant correlation to the progress of diabetes when alpha is set as 0.1. For example, as seen in the graph below, we can see that as bp and bmi increases, so does y.
 ![bp vs bmi vs y graph](./bp_vs_bmi_vs_y.PNG)
 
 The performance of the regression model using only 5 variable mentioned above was 46%.
